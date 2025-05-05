@@ -6434,7 +6434,7 @@ body.sidebar-gone .main-sidebar {
 }
 
 .sidebar-mini .main-sidebar .sidebar-menu li:hover>ul.dropdown-menu li:hover>a {
-    background-color: #fcfcfd;
+    background-color: #774d9f;
 }
 
 .sidebar-mini .main-sidebar .sidebar-menu li:hover>ul.dropdown-menu li .dropdown-menu {
@@ -6744,7 +6744,7 @@ body.layout-3 .breadcrumb-style {
     text-align: center;
     height: 60px;
     line-height: 70px;
-    background: #000;
+    background: #774d9f;
 }
 
 .main-sidebar .sidebar-brand.sidebar-brand-sm {
@@ -7081,7 +7081,7 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu>li.active>a {
     margin: 0px 0px;
     /* border-radius: 10px; */
     color: #fff;
-    background: #000 !important;
+    background: #774d9f !important;
     padding: 11px;
     height: auto;
 }
@@ -9003,7 +9003,7 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 }
 
 .light-sidebar.sidebar-mini .main-sidebar .sidebar-menu li ul.dropdown-menu li a {
-    background-color: #fff;
+    background-color: #774d9f;
     padding-left: 30px;
 }
 
@@ -9012,7 +9012,7 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 }
 
 .light-sidebar.sidebar-mini .main-sidebar .sidebar-menu li ul.dropdown-menu li:hover a {
-    background-color: #fff;
+    background-color: #774d9f;
 }
 
 .light-sidebar.sidebar-mini .main-sidebar .sidebar-menu li .has-dropdown:hover {
@@ -10846,7 +10846,7 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 }
 
 .theme-white .navbar {
-    background: #000;
+    background: #774d9f;
     border-radius: 0;
     padding-right: 43px;
 }
@@ -11673,6 +11673,14 @@ a.dt-button {
 .deposit-icon-2 {
     background: #F1EFFB;
 }
+.login-body{
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Sora', sans-serif;
+    color: #6c757d;
+    background: linear-gradient(45deg, #c6a745, #774d9f);
+    min-height: 100vh;
+}
 
 /* .progress-bar-1{
     background: linear-gradient(269deg, #0006.88%, #000101.88%);
@@ -11681,13 +11689,31 @@ a.dt-button {
 .btn-1 button {
     padding: 10px 30px;
     border-radius: 60px;
-    background-color: #000 !important;
+    background-color: #c6a745 !important;
     color: #fff;
     border: none;
     font-size: 16px;
     font-weight: 500;
     transition: ease-in all 0.3s;
     text-transform: uppercase;
+}
+
+.btn-3  {
+    padding: 9px 13px;
+    background-color: #c6a745 !important;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: ease-in all 0.3s;
+    text-transform: uppercase;
+}
+
+
+.btn-3:hover{
+    background-color: #774d9f !important;
+    color: #fff !important;
+    text-decoration: none;
 }
 
 .btn-2 button {
@@ -12246,7 +12272,7 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 .main-sidebar .sidebar-menu li:hover {
-    background-color: #000 !important;
+    background-color: #774d9f !important;
     color: #fff !important;
 }
 

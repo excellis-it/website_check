@@ -2172,9 +2172,11 @@ textarea.form-control {
     -webkit-transition: none;
     transition: none;
 }
-}.btn:hover {
-    color: #212529;
+}
+.btn:hover {
+    color: #fff;
     text-decoration: none;
+    background-color: #774d9f !important;
 }
 .btn.focus, .btn:focus {
     outline: 0;
