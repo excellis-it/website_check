@@ -157,7 +157,7 @@
     </style>
 </head>
 
-<body>
+<body class="login-body">
     <div class="mainDiv">
         <div class="cardStyle">
             <form action="{{ route('admin.change.password') }}" method="post" name="signupForm" id="signupForm">
@@ -197,9 +197,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="buttonWrapper">
+                <div class="buttonWrapper btn-1">
                     <button type="submit" id="submitButton" onclick="validateSignupForm()"
-                        class="submitButton btn btn-primary">
+                        class="submitButton ">
                         <span>Continue</span>
                         {{-- <span id="loader"></span> --}}
                     </button>

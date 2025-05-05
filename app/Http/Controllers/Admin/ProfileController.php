@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Auth;
+use App\Traits\ImageTrait;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
+    use ImageTrait;
     public function index()
     {
         return view('admin.profile');
@@ -28,6 +30,10 @@ class ProfileController extends Controller
         $data->name = $request->name;
         $data->email = $request->email;
         $data->phone = $request->phone_number;
+        if ($request->profile_picture) {
+            $data->profile_picture = $this->imageUpload($request->file('profile_picture'), 'profile');
+        }
+
         $data->save();
         return redirect()->back()->with('message', 'Profile updated successfully.');
     }

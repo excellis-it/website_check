@@ -30,7 +30,7 @@
     </style>
 </head>
 
-<body>
+<body class="login-body">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <div class="form-gap"></div>
@@ -60,10 +60,10 @@
                                             </div>
                                         @endif
                                     </div>
-                                    <div class="form-group">
-                                        <input name="recover-submit"
-                                            class="btn btn-primary" value="Reset Password"
-                                            type="submit">
+                                    <div class="form-group btn-1">
+                                        <button name="recover-submit"
+                                            class="btn btn-primary" 
+                                            type="submit">Reset Password </button>
                                     </div>
                                 </form>
 

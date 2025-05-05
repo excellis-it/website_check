@@ -69,7 +69,7 @@
                         <div class="form-group-div">
                             <div class="form-group">
                                 <label for="floatingInputValue">Phone Number</label>
-                                <input type="text" class="form-control" id="floatingInputValue" name="phone_number" value="{{ Auth::user()->phone }}"
+                                <input type="tel" class="form-control" id="floatingInputValue" name="phone_number" value="{{ Auth::user()->phone }}"
                                     placeholder="Phone Number" value="Phone Number">
                                 @if ($errors->has('phone_number'))
                                     <div class="error" style="color:red;">{{ $errors->first('phone_number') }}</div>

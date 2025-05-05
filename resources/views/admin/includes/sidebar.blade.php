@@ -6,8 +6,8 @@
         <div class="sidebar-brand">
             <a href="{{ route('admin.dashboard') }}"><span class="logo-name"><img
                         src="{{ asset('admin_assets/img/logo.png') }}" /></span> </a>
-            <a href="{{ route('admin.dashboard') }}"><span class="logo-fm"><img
-                        src="{{ asset('admin_assets/img/logo.png') }}" /></span> </a>
+            <a href="{{ route('admin.dashboard') }}"><span class="logo-fm "><img class="mb-2"
+                        src="{{ asset('admin_assets/img/logo_fm.png') }}" /></span> </a>
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Main</li>
@@ -35,7 +35,7 @@
 
             <li class="dropdown">
                 <a href="javascript:void(0);" class="menu-toggle nav-link has-dropdown {{ Request::is('admin/customers*') ? 'active' : ' ' }}">
-                    <i class="ph ph-user-list"></i>
+                    <i class="fas fa-users"></i>
                     <span> User Management</span>
                 </a>
                 <ul class="dropdown-menu" style="{{ Request::is('admin/customers*') ? 'display: block;' : 'display: none;' }}">

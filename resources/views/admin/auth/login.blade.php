@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
 </head>
 
-<body class="account-page">
+<body class="account-page login-body">
 
     <div class="main-wrapper">
         <div class="account-content">
@@ -72,8 +72,8 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="form-group text-center">
-                                <button class="btn btn-primary account-btn" type="submit">Login</button>
+                            <div class="form-group text-center btn-1">
+                                <button class="btn w-100" type="submit">Login</button>
                             </div>
                             <div class="account-footer">
                                 <p><a href="{{ route('admin.forget.password.show') }}">Forgot Password?</a></p>

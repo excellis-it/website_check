@@ -13,7 +13,7 @@
     All Customer Details
 @endsection
 @section('create_button')
-    <a href="{{route('customers.create')}}" id="create-ecclessia" class="btn btn-primary" data-bs-toggle="modal"
+    <a href="{{route('customers.create')}}" id="create-ecclessia" class="btn-3" data-bs-toggle="modal"
             data-bs-target="#add_ecclessia">+ Create Customer</a>
 @endsection
 @section('content')
