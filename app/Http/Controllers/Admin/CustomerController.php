@@ -85,9 +85,7 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -167,24 +165,41 @@ class CustomerController extends Controller
     public function fetchData(Request $request)
     {
         if ($request->ajax()) {
-            $sort_by = $request->get('sortby');
-            $sort_type = $request->get('sorttype');
-            $query = $request->get('query');
-            $query = str_replace(" ", "%", $query);
-            $customers = User::where('id', 'like', '%' . $query . '%')
-                ->orWhere('name', 'like', '%' . $query . '%')
-                ->orWhere('email', 'like', '%' . $query . '%')
-                ->orWhere('phone', 'like', '%' . $query . '%')
-                ->orWhere('address', 'like', '%' . $query . '%')
-                ->orWhere('city', 'like', '%' . $query . '%')
-                ->orWhere('country', 'like', '%' . $query . '%')
-                ->orWhere('pincode', 'like', '%' . $query . '%')
-                ->orderBy($sort_by, $sort_type)
-                ->Role('CUSTOMER')
-                ->paginate(15);
+            $sortBy   = $request->get('sortby', 'id');
+            $sortType = $request->get('sorttype', 'desc');
+            $search   = $request->get('query');
 
-            return response()->json(['data' => view('admin.customer.table', compact('customers'))->render()]);
+            // Start query
+            $customersQuery = User::role('CUSTOMER');
+
+            // Apply search
+            if (!empty($search)) {
+                $search = str_replace(" ", "%", $search);
+                $customersQuery->where(function ($q) use ($search) {
+                    $q->where('id', 'like', "%{$search}%")
+                        ->orWhere('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('address', 'like', "%{$search}%")
+                        ->orWhere('city', 'like', "%{$search}%")
+                        ->orWhere('country', 'like', "%{$search}%")
+                        ->orWhere('pincode', 'like', "%{$search}%");
+                });
+            }
+
+            // Pagination (reset to 1st page if searching)
+            $page = $request->get('page', 1);
+            if (!empty($search)) {
+                $page = 1;
+            }
+
+            $customers = $customersQuery
+                ->orderBy($sortBy, $sortType)
+                ->paginate(10, ['*'], 'page', $page);
+
+            return response()->json([
+                'data' => view('admin.customer.table', compact('customers'))->render()
+            ]);
         }
     }
-
 }
