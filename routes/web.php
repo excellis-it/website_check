@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\SellerController;
 use App\Http\Controllers\Admin\UrlManagementController;
+use App\Http\Controllers\Admin\RolePermissionController;
 use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Artisan;
 
@@ -68,4 +69,20 @@ Route::group(['middleware' => ['admin'], 'prefix' => 'admin'], function () {
         Route::post('/{encryptedId}/check', [UrlManagementController::class, 'checkUrl'])->name('url-management.check');
     });
     Route::get('/url-management-fetch-data', [UrlManagementController::class, 'fetchData'])->name('url-management.fetch-data');
+
+    // Role & Permission Management Routes
+    Route::resource('roles', RolePermissionController::class);
+    Route::get('/roles/{id}/delete', [RolePermissionController::class, 'destroy'])->name('roles.delete');
+    Route::get('/roles-fetch-data', [RolePermissionController::class, 'fetchData'])->name('roles.fetch-data');
+
+    // Permission Routes
+    Route::prefix('permissions')->group(function () {
+        Route::get('/', [RolePermissionController::class, 'permissionsIndex'])->name('permissions.index');
+        Route::get('/create', [RolePermissionController::class, 'permissionsCreate'])->name('permissions.create');
+        Route::post('/', [RolePermissionController::class, 'permissionsStore'])->name('permissions.store');
+        Route::get('/{id}/edit', [RolePermissionController::class, 'permissionsEdit'])->name('permissions.edit');
+        Route::put('/{id}', [RolePermissionController::class, 'permissionsUpdate'])->name('permissions.update');
+        Route::get('/{id}/delete', [RolePermissionController::class, 'permissionsDestroy'])->name('permissions.delete');
+    });
+    Route::get('/permissions-fetch-data', [RolePermissionController::class, 'permissionsFetchData'])->name('permissions.fetch-data');
 });

@@ -47,10 +47,12 @@
                         <span class="edit-icon"><i class="ph ph-eye"></i></span>
                     </a>
 
-                    <a title="Check Now" href="javascript:void(0);" class="check-url-btn"
-                        data-id="{{ $url->encrypted_id }}">
-                        <span class="edit-icon text-info"><i class="ph ph-arrow-clockwise"></i></span>
-                    </a>
+                    @can('check-urls')
+                        <a title="Check Now" href="javascript:void(0);" class="check-url-btn"
+                            data-id="{{ $url->encrypted_id }}">
+                            <span class="edit-icon text-info"><i class="ph ph-arrow-clockwise"></i></span>
+                        </a>
+                    @endcan
 
                     @can('update', $url)
                         <a title="Edit URL" href="{{ route('url-management.edit', $url->encrypted_id) }}">

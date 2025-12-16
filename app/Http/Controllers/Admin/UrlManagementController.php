@@ -18,10 +18,11 @@ class UrlManagementController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', UrlManagement::class);
         $user = Auth::user();
 
-        // Super admin can see all URLs
-        if ($user->hasRole('ADMIN')) {
+        // Users with manage-urls permission can see all URLs
+        if ($user->can('manage-urls')) {
             $urls = UrlManagement::with(['assignedUsers', 'creator'])
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
@@ -46,7 +47,13 @@ class UrlManagementController extends Controller
         // Only admins can create
         $this->authorize('create', UrlManagement::class);
 
-        $users = User::where('status', 1)->orderBy('name', 'asc')->get();
+        $users = User::where('status', 1)
+            ->where('id', '!=', Auth::id())
+            ->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'SUPER ADMIN');
+            })
+            ->orderBy('name', 'asc')
+            ->get();
         return view('admin.url_management.create', compact('users'));
     }
 
@@ -148,7 +155,14 @@ class UrlManagementController extends Controller
         // Only admins can edit
         $this->authorize('update', $url);
 
-        $users = User::where('status', 1)->orderBy('name', 'asc')->get();
+        $users = User::where('status', 1)
+            ->where('id', '!=', Auth::id())
+            ->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'SUPER ADMIN');
+            })
+            ->orderBy('name', 'asc')
+            ->get();
+
         $assignedUserIds = $url->assignedUsers->pluck('id')->toArray();
 
         return view('admin.url_management.edit', compact('url', 'users', 'assignedUserIds'));
@@ -237,6 +251,8 @@ class UrlManagementController extends Controller
 
         $url = UrlManagement::findOrFail($id);
 
+        $this->authorize('check-urls');
+
         // Check access permissions
         $this->checkAccessPermission($url);
 
@@ -255,13 +271,14 @@ class UrlManagementController extends Controller
     public function fetchData(Request $request)
     {
         if ($request->ajax()) {
+            $this->authorize('viewAny', UrlManagement::class);
             $user = Auth::user();
             $sortBy = $request->get('sortby', 'id');
             $sortType = $request->get('sorttype', 'desc');
             $search = $request->get('query');
 
             // Start query
-            if ($user->hasRole('ADMIN')) {
+            if ($user->can('manage-urls')) {
                 $urlsQuery = UrlManagement::with(['assignedUsers', 'creator']);
             } else {
                 $urlsQuery = UrlManagement::whereHas('assignedUsers', function ($query) use ($user) {
@@ -302,8 +319,8 @@ class UrlManagementController extends Controller
     {
         $user = Auth::user();
 
-        // Super admin has full access
-        if ($user->hasRole('ADMIN')) {
+        // Users with manage-urls have full access
+        if ($user->can('manage-urls')) {
             return true;
         }
 

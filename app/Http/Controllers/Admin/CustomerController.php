@@ -24,6 +24,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
+        $this->authorize('view-users');
         $customers = User::Role('CUSTOMER')->orderBy('name', 'desc')->paginate(15);
         return view('admin.customer.list')->with(compact('customers'));
     }
@@ -35,6 +36,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
+        $this->authorize('create-users');
         return view('admin.customer.create');
     }
 
@@ -46,6 +48,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create-users');
         $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
@@ -90,6 +93,7 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('edit-users');
         $customer = User::findOrFail($id);
         return view('admin.customer.edit')->with(compact('customer'));
     }
@@ -103,6 +107,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('edit-users');
         $request->validate([
             'name' => 'required',
             'email' => 'required|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
@@ -139,6 +144,7 @@ class CustomerController extends Controller
 
     public function changeCustomersStatus(Request $request)
     {
+        $this->authorize('edit-users');
         $user = User::find($request->user_id);
         $user->status = $request->status;
         $user->save();
@@ -147,6 +153,7 @@ class CustomerController extends Controller
 
     public function delete($id)
     {
+        $this->authorize('delete-users');
         $user = User::findOrFail($id);
         $user->delete();
         return redirect()->route('customers.index')->with('error', 'Customer has been deleted successfully.');
@@ -155,6 +162,7 @@ class CustomerController extends Controller
     public function fetchData(Request $request)
     {
         if ($request->ajax()) {
+            $this->authorize('view-users');
             $sortBy   = $request->get('sortby', 'id');
             $sortType = $request->get('sorttype', 'desc');
             $search   = $request->get('query');

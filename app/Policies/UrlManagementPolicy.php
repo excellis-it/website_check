@@ -8,11 +8,21 @@ use App\Models\UrlManagement;
 class UrlManagementPolicy
 {
     /**
+     * Determine if the user can perform any action (super admin override).
+     */
+    public function before(User $user, $ability)
+    {
+        if ($user->hasRole('SUPER ADMIN')) {
+            return true;
+        }
+    }
+
+    /**
      * Determine if the user can view any URLs.
      */
     public function viewAny(User $user): bool
     {
-        return true; // All authenticated users can view URLs they have access to
+        return $user->can('view-urls');
     }
 
     /**
@@ -20,13 +30,14 @@ class UrlManagementPolicy
      */
     public function view(User $user, UrlManagement $url): bool
     {
-        // Super admin can view all
-        if ($user->hasRole('ADMIN')) {
-            return true;
+        if ($user->can('view-urls')) {
+            // Check if user is assigned to this URL OR has manage-urls permission
+            if ($user->can('manage-urls')) {
+                return true;
+            }
+            return $url->assignedUsers()->where('user_id', $user->id)->exists();
         }
-
-        // Check if user is assigned to this URL
-        return $url->assignedUsers()->where('user_id', $user->id)->exists();
+        return false;
     }
 
     /**
@@ -34,7 +45,7 @@ class UrlManagementPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('ADMIN');
+        return $user->can('create-urls');
     }
 
     /**
@@ -42,7 +53,7 @@ class UrlManagementPolicy
      */
     public function update(User $user, UrlManagement $url): bool
     {
-        return $user->hasRole('ADMIN');
+        return $user->can('edit-urls');
     }
 
     /**
@@ -50,6 +61,6 @@ class UrlManagementPolicy
      */
     public function delete(User $user, UrlManagement $url): bool
     {
-        return $user->hasRole('ADMIN');
+        return $user->can('delete-urls');
     }
 }

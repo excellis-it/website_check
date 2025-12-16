@@ -93,9 +93,11 @@
                                 <i class="ph ph-pencil-simple"></i> Edit
                             </a>
                         @endcan
-                        <button class="btn btn-info btn-sm check-url-btn" data-id="{{ $url->encrypted_id }}">
-                            <i class="ph ph-arrow-clockwise"></i> Check Now
-                        </button>
+                        @can('check-urls')
+                            <button class="btn btn-info btn-sm check-url-btn" data-id="{{ $url->encrypted_id }}">
+                                <i class="ph ph-arrow-clockwise"></i> Check Now
+                            </button>
+                        @endcan
                     </div>
                 </div>
 
@@ -314,7 +316,7 @@
                     btn.prop('disabled', false);
 
                     swal('Success', 'URL checked successfully! Refreshing page...', 'success').then(
-                    () => {
+                        () => {
                             location.reload();
                         });
                 },
