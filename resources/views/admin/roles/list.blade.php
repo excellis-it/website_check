@@ -15,9 +15,9 @@
     Roles Management
 @endsection
 @section('create_button')
-    @can('create-roles')
+    {{-- @can('create-roles')
         <a href="{{ route('roles.create') }}" class="btn-3">+ Create Role</a>
-    @endcan
+    @endcan --}}
 @endsection
 @section('content')
     <section id="loading">

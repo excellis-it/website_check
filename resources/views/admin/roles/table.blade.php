@@ -14,7 +14,7 @@
                     </div>
                 @else
                     <span class="text-muted">No permissions assigned</span>
-                @endif
+                @endif  
             </td>
             <td>
                 <span class="badge bg-info">{{ $role->users()->count() }}</span>
@@ -34,7 +34,7 @@
                     @endcan
 
                     @can('delete-roles')
-                        @if (!in_array($role->name, ['ADMIN', 'CUSTOMER']))
+                        @if (!in_array($role->name, ['ADMIN', 'USER']))
                             <a title="Delete Role" data-route="{{ route('roles.delete', $role->id) }}"
                                 href="javascript:void(0);" id="delete">
                                 <span class="trash-icon"><i class="ph ph-trash"></i></span>

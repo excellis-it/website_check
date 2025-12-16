@@ -25,7 +25,7 @@ class CustomerController extends Controller
     public function index()
     {
         $this->authorize('view-users');
-        $customers = User::Role('CUSTOMER')->orderBy('name', 'desc')->paginate(15);
+        $customers = User::Role('USER')->orderBy('name', 'desc')->paginate(15);
         return view('admin.customer.list')->with(compact('customers'));
     }
 
@@ -65,7 +65,7 @@ class CustomerController extends Controller
         $data->phone = $request->phone;
         $data->status = $request->status;
         $data->save();
-        $data->assignRole('CUSTOMER');
+        $data->assignRole('USER');
         $maildata = [
             'name' => $request->name,
             'email' => $request->email,
@@ -168,7 +168,7 @@ class CustomerController extends Controller
             $search   = $request->get('query');
 
             // Start query
-            $customersQuery = User::role('CUSTOMER');
+            $customersQuery = User::role('USER');
 
             // Apply search
             if (!empty($search)) {

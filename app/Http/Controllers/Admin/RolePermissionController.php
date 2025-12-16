@@ -129,7 +129,7 @@ class RolePermissionController extends Controller
         $role = Role::findOrFail($id);
 
         // Prevent deletion of default roles
-        if (in_array($role->name, ['ADMIN', 'CUSTOMER'])) {
+        if (in_array($role->name, ['ADMIN', 'USER'])) {
             return redirect()->route('roles.index')
                 ->with('error', 'Cannot delete default system roles.');
         }

@@ -103,13 +103,13 @@
                         style="{{ Request::is('admin/roles*') || Request::is('admin/permissions*') ? 'display: block;' : 'display: none;' }}">
 
                         <li class="menu-header small text-muted ml-3">Roles</li>
-                        @can('create-roles')
+                        {{-- @can('create-roles')
                             <li class="{{ Request::is('admin/roles/create') ? 'active' : ' ' }}">
                                 <a class="nav-link" href="{{ route('roles.create') }}">
                                     <i class="ph ph-plus-circle me-2"></i>Create Role
                                 </a>
                             </li>
-                        @endcan
+                        @endcan --}}
                         <li
                             class="{{ Request::is('admin/roles') && !Request::is('admin/roles/create') ? 'active' : ' ' }}">
                             <a class="nav-link" href="{{ route('roles.index') }}">
@@ -117,7 +117,7 @@
                             </a>
                         </li>
 
-                        @can('view-permissions')
+                        {{-- @can('view-permissions')
                             <li class="menu-header small text-muted ml-3">Permissions</li>
                             @can('create-permissions')
                                 <li class="{{ Request::is('admin/permissions/create') ? 'active' : ' ' }}">
@@ -132,7 +132,7 @@
                                     <i class="ph ph-list-dashes me-2"></i>Permission List
                                 </a>
                             </li>
-                        @endcan
+                        @endcan --}}
                     </ul>
                 </li>
             @endcan

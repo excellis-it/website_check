@@ -63,12 +63,12 @@ class RolePermissionSeeder extends Seeder
         // 2. Define Roles and Assign Permissions
 
         // ADMIN Role - Gets ALL permissions
-        $adminRole = Role::firstOrCreate(['name' => 'SUPER ADMIN']);
+        $adminRole = Role::firstOrCreate(['name' => 'ADMIN']);
         $adminRole->givePermissionTo(Permission::all());
 
-        // CUSTOMER Role - Limited permissions (Example)
-        $customerRole = Role::firstOrCreate(['name' => 'CUSTOMER']);
-   
+        // USER Role - Limited permissions (Example)
+        $customerRole = Role::firstOrCreate(['name' => 'USER']);
+
         $customerRole->givePermissionTo([
             'view-dashboard',
 

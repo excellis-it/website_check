@@ -12,7 +12,7 @@ class UrlManagementPolicy
      */
     public function before(User $user, $ability)
     {
-        if ($user->hasRole('SUPER ADMIN')) {
+        if ($user->hasRole('ADMIN')) {
             return true;
         }
     }

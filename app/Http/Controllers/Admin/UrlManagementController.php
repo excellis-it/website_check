@@ -22,7 +22,7 @@ class UrlManagementController extends Controller
         $user = Auth::user();
 
         // Users with manage-urls permission can see all URLs
-        if ($user->can('manage-urls')) {
+        if ($user->hasRole('ADMIN')) {
             $urls = UrlManagement::with(['assignedUsers', 'creator'])
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
@@ -50,7 +50,7 @@ class UrlManagementController extends Controller
         $users = User::where('status', 1)
             ->where('id', '!=', Auth::id())
             ->whereDoesntHave('roles', function ($query) {
-                $query->where('name', 'SUPER ADMIN');
+                $query->where('name', 'ADMIN');
             })
             ->orderBy('name', 'asc')
             ->get();
@@ -158,7 +158,7 @@ class UrlManagementController extends Controller
         $users = User::where('status', 1)
             ->where('id', '!=', Auth::id())
             ->whereDoesntHave('roles', function ($query) {
-                $query->where('name', 'SUPER ADMIN');
+                $query->where('name', 'ADMIN');
             })
             ->orderBy('name', 'asc')
             ->get();
