@@ -181,7 +181,7 @@ class CustomerController extends Controller
 
             $customers = $customersQuery
                 ->orderBy($sortBy, $sortType)
-                ->paginate(10, ['*'], 'page', $page);
+                ->paginate(15, ['*'], 'page', $page);
 
             return response()->json([
                 'data' => view('admin.customer.table', compact('customers'))->render()
