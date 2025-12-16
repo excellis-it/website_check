@@ -11869,7 +11869,7 @@ body:not(.sidebar-mini)
 }
 
 .theme-white .text-primary {
-    color: #fff !important;
+    color: #000 !important;
 }
 
 .theme-white a:hover {

@@ -22,7 +22,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
-   
+
 </head>
 
 <body class="login-body">
@@ -42,14 +42,21 @@
 
                 <div class="form-group">
                     <label>User Name</label>
-                    <input type="text" class="form-control" name="email" placeholder="Enter User Name">
+                    <input type="text" class="form-control" name="email" placeholder="Enter User Name" value="{{ old('email') }}">
+                    @if ($errors->has('email'))
+                        <div class="error text-danger small mt-1">{{ $errors->first('email') }}</div>
+                    @endif
                 </div>
 
                 <div class="form-group">
                     <label>Password</label>
                     <div class="password-box">
-                        <input type="password" class="form-control" name="password" placeholder="Enter Password">
+                        <input type="password" class="form-control" name="password" placeholder="Enter Password" value="{{ old('password') }}">
+
                         <span class="toggle-eye ph ph-eye-slash"></span>
+                        @if ($errors->has('password'))
+                            <div class="error text-danger small mt-1">{{ $errors->first('password') }}</div>
+                        @endif
                     </div>
                 </div>
 

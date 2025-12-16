@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\SellerController;
+use App\Http\Controllers\Admin\UrlManagementController;
 use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Artisan;
 
@@ -37,7 +38,7 @@ Route::get('forget-password/show', [ForgetPasswordController::class, 'forgetPass
 Route::get('reset-password/{id}/{token}', [ForgetPasswordController::class, 'resetPassword'])->name('admin.reset.password');
 Route::post('change-password', [ForgetPasswordController::class, 'changePassword'])->name('admin.change.password');
 
-Route::group(['middleware' => ['admin'], 'prefix'=>'admin'], function () {
+Route::group(['middleware' => ['admin'], 'prefix' => 'admin'], function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('profile', [ProfileController::class, 'index'])->name('admin.profile');
     Route::post('profile/update', [ProfileController::class, 'profileUpdate'])->name('admin.profile.update');
@@ -58,7 +59,13 @@ Route::group(['middleware' => ['admin'], 'prefix'=>'admin'], function () {
     Route::get('/changeCustomerStatus', [CustomerController::class, 'changeCustomersStatus'])->name('customers.change-status');
     Route::get('/customer-fetch-data', [CustomerController::class, 'fetchData'])->name('customers.fetch-data');
 
+    // URL Management Routes
+    Route::resource('url-management', UrlManagementController::class)->parameters([
+        'url-management' => 'encryptedId'
+    ]);
+    Route::prefix('url-management')->group(function () {
+        Route::get('/{encryptedId}/delete', [UrlManagementController::class, 'destroy'])->name('url-management.delete');
+        Route::post('/{encryptedId}/check', [UrlManagementController::class, 'checkUrl'])->name('url-management.check');
+    });
+    Route::get('/url-management-fetch-data', [UrlManagementController::class, 'fetchData'])->name('url-management.fetch-data');
 });
-
-
-

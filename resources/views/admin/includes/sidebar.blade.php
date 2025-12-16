@@ -62,6 +62,30 @@
                     </li>
                 </ul>
             </li>
+
+            <li class="dropdown">
+                <a href="javascript:void(0);"
+                    class="menu-toggle nav-link has-dropdown {{ Request::is('admin/url-management*') ? 'active' : ' ' }}">
+                    <i class="ph ph-globe" style="font-size: 1.2rem;"></i>
+                    <span>URL Management</span>
+                </a>
+                <ul class="dropdown-menu"
+                    style="{{ Request::is('admin/url-management*') ? 'display: block;' : 'display: none;' }}">
+                    @can('create', App\Models\UrlManagement::class)
+                        <li class="{{ Request::is('admin/url-management/create') ? 'active' : ' ' }}">
+                            <a class="nav-link" href="{{ route('url-management.create') }}">
+                                <i class="ph ph-plus-circle me-2"></i>Create URL
+                            </a>
+                        </li>
+                    @endcan
+                    <li
+                        class="{{ Request::is('admin/url-management') || Request::is('admin/url-management') ? 'active' : ' ' }}">
+                        <a class="nav-link" href="{{ route('url-management.index') }}">
+                            <i class="ph ph-list-dashes me-2"></i>URL List
+                        </a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </aside>
 </div>
