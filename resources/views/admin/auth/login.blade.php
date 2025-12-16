@@ -22,73 +22,51 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+   
 </head>
 
-<body class="account-page login-body">
+<body class="login-body">
+    <div class="login-wrapper">
+        <div class="login-left"></div>
+        <div class="login-right"></div>
 
-    <div class="main-wrapper">
-        <div class="account-content">
-            <div class="container">
+        <div class="login-card">
+            <div class="login-logo">
+                <img src="{{ asset('admin_assets/img/logo.png') }}" alt="Excellis">
+            </div>
 
-                <div class="account-logo">
-                    <a href="{{route('home')}}"><img src="{{ asset('admin_assets/img/logo.png') }}"
-                            alt="Dreamguy's Technologies"></a>
+            <h3 class="login-title">Login</h3>
+
+            <form action="{{ route('admin.login.check') }}" method="POST">
+                @csrf
+
+                <div class="form-group">
+                    <label>User Name</label>
+                    <input type="text" class="form-control" name="email" placeholder="Enter User Name">
                 </div>
 
-                <div class="account-box">
-                    <div class="account-wrapper">
-                        <h3 class="account-title">Login</h3>
-                        <p class="account-subtitle">Access to our dashboard</p>
-
-                        <form action="{{ route('admin.login.check') }}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <label>Email Address</label>
-                                <input type="email" class="form-control" name="email" id="inputEmailAddress"
-                                    placeholder="Email Address">
-                                @if ($errors->has('email'))
-                                    <div class="error" style="color:red;">{{ $errors->first('email') }}</div>
-                                @endif
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col">
-                                        <label>Password</label>
-                                    </div>
-                                    {{-- <div class="col-auto">
-                                                <a class="text-muted" href="forgot-password.html">
-                                                    Forgot password?
-                                                </a>
-                                            </div> --}}
-                                </div>
-                                <div class="position-relative" id="show_hide_password">
-                                    <input type="password" class="form-control border-end-0" name="password"
-                                        id="inputChoosePassword" placeholder="Enter Password">
-                                    <a href="javascript:;" class=""><span class="ph ph-eye-slash"
-                                            id="toggle-password"></span></a>
-                                </div>
-                                @if ($errors->has('password'))
-                                    <div class="error" style="color:red;">{{ $errors->first('password') }}
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="form-group text-center btn-1">
-                                <button class="btn w-100" type="submit">Login</button>
-                            </div>
-                            <div class="account-footer">
-                                <p><a href="{{ route('admin.forget.password.show') }}">Forgot Password?</a></p>
-                            </div>
-                        </form>
-
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-box">
+                        <input type="password" class="form-control" name="password" placeholder="Enter Password">
+                        <span class="toggle-eye ph ph-eye-slash"></span>
                     </div>
                 </div>
-            </div>
+
+                <div class="forgot-link">
+                    <a href="{{ route('admin.forget.password.show') }}">Forgot Your Password?</a>
+                </div>
+
+                <button type="submit" class="btn-login">Login</button>
+            </form>
         </div>
 
+        <div class="copyright">
+            © 2025 Excellis IT Private Limited
+        </div>
     </div>
-
-
 </body>
+
 
 <script src="{{ asset('admin_assets/js/jquery-3.4.1.min.js') }}"></script>
 <!-- <script src="js/jquery.min.js"></script> -->
@@ -108,21 +86,20 @@
 <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#toggle-password').on('click', function () {
-            let input = $('#inputChoosePassword');
-            let icon = $(this);
-
-            if (input.attr('type') === 'password') {
-                input.attr('type', 'text');
-                icon.removeClass('ph-eye-slash').addClass('ph-eye');
-            } else {
-                input.attr('type', 'password');
-                icon.removeClass('ph-eye').addClass('ph-eye-slash');
-            }
-        });
+    document.querySelector('.toggle-eye').addEventListener('click', function() {
+        const input = this.previousElementSibling;
+        if (input.type === 'password') {
+            input.type = 'text';
+            this.classList.remove('ph-eye-slash');
+            this.classList.add('ph-eye');
+        } else {
+            input.type = 'password';
+            this.classList.add('ph-eye-slash');
+            this.classList.remove('ph-eye');
+        }
     });
 </script>
+
 
 <script>
     @if (Session::has('message'))

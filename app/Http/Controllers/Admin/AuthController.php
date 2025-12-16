@@ -20,6 +20,7 @@ class AuthController extends Controller
 
     public function redirectAdminLogin()
     {
+
         return redirect()->route('admin.login');
     }
 

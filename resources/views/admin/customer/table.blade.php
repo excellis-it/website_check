@@ -4,15 +4,11 @@
             <td>{{ $customer->name }}</td>
             <td>{{ $customer->email }}</td>
             <td>{{ $customer->phone }}</td>
-            <td>{{ $customer->city }}</td>
-            <td>{{ $customer->country }}</td>
-            <td>{{ $customer->address }}</td>
             <td>
                 <div class="button-switch">
-                    <input type="checkbox" id="switch-orange" class="switch toggle-class" data-id="{{ $customer['id'] }}"
-                        {{ $customer['status'] ? 'checked' : '' }} />
-                    <label for="switch-orange" class="lbl-off"></label>
-                    <label for="switch-orange" class="lbl-on"></label>
+                    <input type="checkbox" id="status-toggle-{{ $customer['id'] }}" class="switch toggle-class"
+                        data-id="{{ $customer['id'] }}" {{ $customer['status'] ? 'checked' : '' }} />
+                    <label for="status-toggle-{{ $customer['id'] }}"></label>
                 </div>
             </td>
             <td>
@@ -35,7 +31,7 @@
             </div>
         </td>
     </tr>
-    @else
+@else
     <tr>
         <td colspan="8" class="text-center">No Data Found</td>
     </tr>

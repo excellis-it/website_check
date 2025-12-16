@@ -28,7 +28,7 @@ Route::get('clear', function () {
     return "Optimize clear has been successfully";
 });
 
-Route::get('/admin', [AuthController::class, 'redirectAdminLogin']);
+Route::get('/', [AuthController::class, 'redirectAdminLogin']);
 Route::get('/admin/login', [AuthController::class, 'login'])->name('admin.login');
 Route::post('/login-check', [AuthController::class, 'loginCheck'])->name('admin.login.check');  //login check
 Route::post('forget-password', [ForgetPasswordController::class, 'forgetPassword'])->name('admin.forget.password');
@@ -62,4 +62,3 @@ Route::group(['middleware' => ['admin'], 'prefix'=>'admin'], function () {
 
 
 
-Route::get('/', [HomeController::class, 'home'])->name('home');

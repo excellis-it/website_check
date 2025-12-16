@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="col-xl-12 text-center">
                                     <div class="btn-1">
-                                        <button type="submit">Change password</button>
+                                        <button type="submit" class="btn-3">Change password</button>
                                     </div>
                                 </div>
                             </div>
