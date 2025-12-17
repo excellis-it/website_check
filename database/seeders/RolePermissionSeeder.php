@@ -19,8 +19,6 @@ class RolePermissionSeeder extends Seeder
 
         // 1. Define Permissions
         $permissions = [
-            // Dashboard
-            'view-dashboard',
 
             // User Management
             'view-users',
@@ -58,7 +56,6 @@ class RolePermissionSeeder extends Seeder
         $customerRole = Role::firstOrCreate(['name' => 'USER']);
 
         $customerRole->givePermissionTo([
-            'view-dashboard',
 
             'view-urls',
             'create-urls',
