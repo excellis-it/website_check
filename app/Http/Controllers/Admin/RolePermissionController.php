@@ -27,7 +27,8 @@ class RolePermissionController extends Controller
     {
         $this->authorize('create-roles');
         $permissions = Permission::orderBy('name', 'asc')->get();
-        return view('admin.roles.create', compact('permissions'));
+        $groupedPermissions = $this->groupPermissions($permissions);
+        return view('admin.roles.create', compact('permissions', 'groupedPermissions'));
     }
 
     /**
@@ -81,9 +82,24 @@ class RolePermissionController extends Controller
         $this->authorize('edit-roles');
         $role = Role::with('permissions')->findOrFail($id);
         $permissions = Permission::orderBy('name', 'asc')->get();
+        $groupedPermissions = $this->groupPermissions($permissions);
         $rolePermissions = $role->permissions->pluck('id')->toArray();
 
-        return view('admin.roles.edit', compact('role', 'permissions', 'rolePermissions'));
+        return view('admin.roles.edit', compact('role', 'permissions', 'groupedPermissions', 'rolePermissions'));
+    }
+
+    /**
+     * Group permissions by their resource (suffix)
+     */
+    private function groupPermissions($permissions)
+    {
+        $grouped = [];
+        foreach ($permissions as $permission) {
+            $parts = explode('-', $permission->name);
+            $group = count($parts) > 1 ? ucfirst(end($parts)) : 'General';
+            $grouped[$group][] = $permission;
+        }
+        return $grouped;
     }
 
     /**

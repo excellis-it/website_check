@@ -39,20 +39,8 @@ class RolePermissionSeeder extends Seeder
 
             // Role & Permission Management
             'view-roles',
-            'create-roles',
             'edit-roles',
-            'delete-roles',
             'manage-roles',
-
-            'view-permissions',
-            'create-permissions',
-            'edit-permissions',
-            'delete-permissions',
-            'manage-permissions',
-
-            // General Settings (if applicable)
-            'view-settings',
-            'manage-settings',
         ];
 
         // Create Permissions
@@ -71,12 +59,6 @@ class RolePermissionSeeder extends Seeder
 
         $customerRole->givePermissionTo([
             'view-dashboard',
-
-            'view-users',
-            'create-users',
-            'edit-users',
-            // No delete-users
-            'manage-users',
 
             'view-urls',
             'create-urls',

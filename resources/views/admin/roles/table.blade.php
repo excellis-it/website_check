@@ -14,7 +14,7 @@
                     </div>
                 @else
                     <span class="text-muted">No permissions assigned</span>
-                @endif  
+                @endif
             </td>
             <td>
                 <span class="badge bg-info">{{ $role->users()->count() }}</span>

@@ -12,7 +12,7 @@
                             <span class="badge bg-secondary">{{ $role->name }}</span>
                         @endforeach
                         @if ($roles->count() > 3)
-                            <span class="badge bg-dark">+{{ $roles->count() - 3 }} more</span>
+                            <span class="badge bg-dark text-white">+{{ $roles->count() - 3 }} more</span>
                         @endif
                     </div>
                 @else
