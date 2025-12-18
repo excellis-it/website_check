@@ -17,6 +17,7 @@ class UrlManagement extends Model
         'name',
         'url',
         'status',
+        'ssl_status',
         'last_checked_at',
         'response_time',
         'status_code',

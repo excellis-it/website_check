@@ -74,10 +74,14 @@ class UrlManagementController extends Controller
 
         DB::beginTransaction();
         try {
+            // Check SSL status
+            $sslStatus = parse_url($request->url, PHP_URL_SCHEME) === 'https' ? 'active' : 'inactive';
+
             $url = UrlManagement::create([
                 'name' => $request->name,
                 'url' => $request->url,
                 'status' => 'inactive',
+                'ssl_status' => $sslStatus,
                 'created_by' => Auth::id(),
             ]);
 
@@ -193,17 +197,24 @@ class UrlManagementController extends Controller
 
         DB::beginTransaction();
         try {
+            // Check SSL status
+            $sslStatus = parse_url($request->url, PHP_URL_SCHEME) === 'https' ? 'active' : 'inactive';
+
             $url->update([
                 'name' => $request->name,
                 'url' => $request->url,
+                'ssl_status' => $sslStatus,
             ]);
 
             // Update assigned users
-            if ($request->has('assigned_users') && is_array($request->assigned_users)) {
-                $url->assignedUsers()->sync($request->assigned_users);
-            } else {
-                $url->assignedUsers()->sync([]);
+            if (auth()->user()->hasRole('ADMIN')) {
+                if ($request->has('assigned_users') && is_array($request->assigned_users)) {
+                    $url->assignedUsers()->sync($request->assigned_users);
+                } else {
+                    $url->assignedUsers()->sync([]);
+                }
             }
+
 
             DB::commit();
             return redirect()->route('url-management.index')

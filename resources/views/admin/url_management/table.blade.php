@@ -14,6 +14,13 @@
                 </span>
             </td>
             <td>
+                @if ($url->ssl_status == 'active')
+                    <span class="status-badge status-active">Active</span>
+                @else
+                    <span class="status-badge status-inactive">Inactive</span>
+                @endif
+            </td>
+            <td>
                 @if ($url->response_time)
                     <span class="badge bg-info">{{ $url->response_time }}ms</span>
                 @else
@@ -27,6 +34,7 @@
                     <span class="text-muted">Never</span>
                 @endif
             </td>
+             @if (auth()->user()->hasRole('ADMIN'))
             <td>
                 @if ($url->assignedUsers->count() > 0)
                     <div class="d-flex flex-wrap gap-1">
@@ -41,6 +49,7 @@
                     <span class="text-muted">No users assigned</span>
                 @endif
             </td>
+            @endif
             <td>
                 <div class="edit-1 d-flex align-items-center justify-content-center gap-2">
                     <a title="View Details" href="{{ route('url-management.show', $url->encrypted_id) }}">
@@ -72,7 +81,7 @@
     @endforeach
     {{-- pagination --}}
     <tr>
-        <td colspan="7">
+        <td colspan="8">
             <div class="d-flex justify-content-center">
                 {!! $urls->links() !!}
             </div>
@@ -80,6 +89,6 @@
     </tr>
 @else
     <tr>
-        <td colspan="7" class="text-center">No Data Found</td>
+        <td colspan="8" class="text-center">No Data Found</td>
     </tr>
 @endif

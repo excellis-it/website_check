@@ -81,9 +81,12 @@
                                 </th>
 
                                 <th>Status</th>
+                                <th>SSL Status</th>
                                 <th>Response Time</th>
                                 <th>Last Checked</th>
-                                <th>Assigned Users</th>
+                                @if (auth()->user()->hasRole('ADMIN'))
+                                    <th>Assigned Users</th>
+                                @endif
                                 <th>Action</th>
                             </tr>
                         </thead>
