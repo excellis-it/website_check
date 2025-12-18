@@ -129,8 +129,11 @@ class CheckUrlsStatus extends Command
         }
 
         // Update URL status
+        $sslStatus = parse_url($url->url, PHP_URL_SCHEME) === 'https' ? 'active' : 'inactive';
+
         $url->update([
             'status' => $status === 'up' ? 'active' : 'down',
+            'ssl_status' => $sslStatus,
             'last_checked_at' => now(),
             'response_time' => $responseTime,
             'status_code' => $statusCode,
