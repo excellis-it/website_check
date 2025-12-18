@@ -30,6 +30,11 @@ Route::get('clear', function () {
     return "Optimize clear has been successfully";
 });
 
+Route::get('check-url-status', function(){
+    Artisan::call('urls:check');
+    return "URL status check has been successfully";
+});
+
 Route::get('/', [AuthController::class, 'redirectAdminLogin']);
 Route::get('/admin/login', [AuthController::class, 'login'])->name('admin.login');
 Route::post('/login-check', [AuthController::class, 'loginCheck'])->name('admin.login.check');  //login check
