@@ -143,7 +143,8 @@
 
             $.ajax({
                 type: "POST",
-                url: '/admin/url-management/' + encryptedId + '/check',
+                url: "{{ route('url-management.check', ':encryptedId') }}".replace(':encryptedId',
+                    encryptedId),
                 data: {
                     _token: '{{ csrf_token() }}'
                 },
