@@ -5,6 +5,14 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\UrlManagement;
 use App\Models\UrlActivityLog;
+use App\Models\User;
+use App\Mail\UrlStatusDownMail;
+use App\Mail\UrlStatusUpMail;
+use App\Notifications\UrlDownNotification;
+use App\Notifications\UrlUpNotification;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Carbon\Carbon;
 
 class CheckUrlsStatus extends Command
@@ -131,6 +139,9 @@ class CheckUrlsStatus extends Command
         // Update URL status
         $sslStatus = parse_url($url->url, PHP_URL_SCHEME) === 'https' ? 'active' : 'inactive';
 
+        // Capture previous status to detect "Back Up" transition
+        $previousStatus = $url->status;
+
         $url->update([
             'status' => $status === 'up' ? 'active' : 'down',
             'ssl_status' => $sslStatus,
@@ -150,6 +161,46 @@ class CheckUrlsStatus extends Command
             'checked_at' => now(),
             'log_date' => today(),
         ]);
+
+        // Send Email if status is DOWN
+        if ($status === 'down') {
+            try {
+                // Get assigned users
+                $assignedEmails = $url->assignedUsers()->pluck('email')->toArray();
+
+                // Get Super Admins (ADMIN role)
+                $adminEmails = User::role('ADMIN')->pluck('email')->toArray();
+
+                // Merge and unique emails
+                $allRecipients = array_unique(array_filter(array_merge($assignedEmails, $adminEmails)));
+
+                if (!empty($allRecipients)) {
+                    $users = User::whereIn('email', $allRecipients)->get();
+                    Notification::send($users, new UrlDownNotification($url));
+                    Log::info("Down notification sent to " . $users->count() . " users for URL: {$url->name}");
+                }
+            } catch (\Exception $e) {
+                // Log email error but don't stop the process
+                Log::error("Failed to send status down email for URL {$url->name}: " . $e->getMessage());
+            }
+        }
+
+        // Send Email if status is BACK UP (Transition from 'down' to 'active')
+        if ($status === 'up' && $previousStatus === 'down') {
+            try {
+                $assignedEmails = $url->assignedUsers()->pluck('email')->toArray();
+                $adminEmails = User::role('ADMIN')->pluck('email')->toArray();
+                $allRecipients = array_unique(array_filter(array_merge($assignedEmails, $adminEmails)));
+
+                if (!empty($allRecipients)) {
+                    $users = User::whereIn('email', $allRecipients)->get();
+                    Notification::send($users, new UrlUpNotification($url));
+                    Log::info("Back Up notification sent to " . $users->count() . " users for URL: {$url->name}");
+                }
+            } catch (\Exception $e) {
+                Log::error("Failed to send status up email for URL {$url->name}: " . $e->getMessage());
+            }
+        }
 
         return [
             'status' => $status,
