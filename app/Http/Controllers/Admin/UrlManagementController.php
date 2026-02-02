@@ -74,8 +74,8 @@ class UrlManagementController extends Controller
 
         DB::beginTransaction();
         try {
-            // Check SSL status
-            $sslStatus = parse_url($request->url, PHP_URL_SCHEME) === 'https' ? 'active' : 'inactive';
+            // Check actual SSL certificate validity
+            $sslStatus = $this->checkSslCertificate($request->url);
 
             $url = UrlManagement::create([
                 'name' => $request->name,
@@ -197,8 +197,8 @@ class UrlManagementController extends Controller
 
         DB::beginTransaction();
         try {
-            // Check SSL status
-            $sslStatus = parse_url($request->url, PHP_URL_SCHEME) === 'https' ? 'active' : 'inactive';
+            // Check actual SSL certificate validity
+            $sslStatus = $this->checkSslCertificate($request->url);
 
             $url->update([
                 'name' => $request->name,
@@ -390,8 +390,8 @@ class UrlManagementController extends Controller
             $errorMessage = $e->getMessage();
         }
 
-        // Update URL status
-        $sslStatus = parse_url($url->url, PHP_URL_SCHEME) === 'https' ? 'active' : 'inactive';
+        // Update URL status with actual SSL verification
+        $sslStatus = $this->checkSslCertificate($url->url);
 
         $url->update([
             'status' => $status === 'up' ? 'active' : 'down',
@@ -419,5 +419,69 @@ class UrlManagementController extends Controller
             'status_code' => $statusCode,
             'error_message' => $errorMessage,
         ];
+    }
+
+    /**
+     * Check SSL certificate validity for a URL
+     * This method verifies if the URL has a valid SSL certificate
+     *
+     * @param string $url
+     * @return string 'active' or 'inactive'
+     */
+    private function checkSslCertificate($url)
+    {
+        // First check if URL uses HTTPS
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+
+        // If not HTTPS, SSL is inactive
+        if ($scheme !== 'https') {
+            return 'inactive';
+        }
+
+        // Try to verify SSL certificate
+        try {
+            $ch = curl_init($url);
+
+            // Configure cURL to verify SSL
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+            curl_setopt($ch, CURLOPT_NOBODY, true); // HEAD request only
+
+            // IMPORTANT: Enable SSL verification
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+
+            // Execute request
+            $result = curl_exec($ch);
+
+            // Check for SSL errors
+            $curlError = curl_error($ch);
+            $curlErrno = curl_errno($ch);
+
+            curl_close($ch);
+
+            // If there's an SSL-related error, mark as inactive
+            if ($curlErrno !== 0) {
+                // Common SSL error codes:
+                // 51 - CURLE_PEER_FAILED_VERIFICATION (SSL certificate problem)
+                // 60 - CURLE_SSL_CACERT (SSL certificate problem: unable to get local issuer certificate)
+                // 77 - CURLE_SSL_CACERT_BADFILE
+                if (in_array($curlErrno, [51, 60, 77])) {
+                    return 'inactive';
+                }
+            }
+
+            // If execution was successful and no SSL errors, SSL is active
+            if ($result !== false && empty($curlError)) {
+                return 'active';
+            }
+
+            // Default to inactive if any errors occurred
+            return 'inactive';
+        } catch (\Exception $e) {
+            // If any exception occurs, mark SSL as inactive
+            return 'inactive';
+        }
     }
 }
